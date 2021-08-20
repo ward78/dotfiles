@@ -1,54 +1,81 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"runtime"
 	"errors"
+	"fmt"
+	"os"
 	"os/user"
-//	"path/filepath"
+	"runtime"
+	"strings"
+	//"path/filepath"
+	//"path"
 )
+
+type authUser struct {
+	name string
+	uid  string
+	gid  string
+	dir  string
+}
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
+		fmt.Fprintln(os.Stderr, "error:", err)
 		os.Exit(1)
 	}
 }
 
 func run() error {
-	err := verifySystem()
+	authUser, err := getAuthUser()
 	if err != nil {
 		return err
 	}
+	fmt.Println(authUser.name)
+	fmt.Println(authUser.uid)
+	fmt.Println(authUser.gid)
+	fmt.Println(authUser.dir)
 	return nil
 }
 
-func verifySystem() error {
+func getAuthUser() (*authUser, error) {
+	// Make sure OS is linux
 	if runtime.GOOS != "linux" {
-		return errors.New("script requires linux OS")
+		return nil, errors.New("script requires linux OS")
 	}
-	u, err := user.Current()
-	if err != nil {
-		return err
-	}
-	if u.Gid != "0" {
-		return errors.New("root/sudo access is required")
-	}
-	return nil
-}
 
-func backupRun() error {
-	oldLocation := "/var/www/html/test.txt"
-	newLocation := "/var/www/html/src/test.txt"
-	err := os.Rename(oldLocation, newLocation)
+	// Get current user
+	admin, err := user.Current()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return nil
-}
 
-func backupReload() error {
-	return nil
+	// Make sure user has root access
+	if admin.Name != "root" {
+		return nil, errors.New("root/sudo access is required")
+	}
+
+	// Get current working directory
+	pwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	// Make an assumption about user's home directory
+	userName := os.Getenv("SUDO_USER")
+	homeDir := "/home/" + userName 
+
+	// Check to see if current working directory contains home directory
+	isHomeDir := strings.HasPrefix(pwd, homeDir)
+	if isHomeDir != true {
+		return nil, errors.New("script requires linux OS")
+	}
+
+	// Populate auth user info
+	a := &authUser{
+		name: userName,
+		uid:  os.Getenv("SUDO_UID"),
+		gid:  os.Getenv("SUDO_GID"),
+		dir:  homeDir,
+	}
+	return a, nil
 }
