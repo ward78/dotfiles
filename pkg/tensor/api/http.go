@@ -8,9 +8,9 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
 
-	js "github.com/tensor-programming/hex-microservice/serializer/json"
-	ms "github.com/tensor-programming/hex-microservice/serializer/msgpack"
-	"github.com/tensor-programming/hex-microservice/shortener"
+	js "github.com/ward78/dotfiles/pkg/tensor/serializer/json"
+	ms "github.com/ward78/dotfiles/pkg/tensor/serializer/msgpack"
+	"github.com/ward78/dotfiles/pkg/tensor/shortener"
 )
 
 type RedirectHandler interface {

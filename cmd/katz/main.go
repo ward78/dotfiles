@@ -5,12 +5,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/adding"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/http/rest"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/listing"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/reviewing"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/storage/json"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/storage/memory"
+	"github.com/ward78/dotfiles/pkg/katz/adding"
+	"github.com/ward78/dotfiles/pkg/katz/http/rest"
+	"github.com/ward78/dotfiles/pkg/katz/listing"
+	"github.com/ward78/dotfiles/pkg/katz/reviewing"
+	"github.com/ward78/dotfiles/pkg/katz/storage/json"
+	"github.com/ward78/dotfiles/pkg/katz/storage/memory"
 )
 
 // StorageType defines available storage types

@@ -2,8 +2,8 @@ package msgpack
 
 import (
 	"github.com/pkg/errors"
-	"github.com/tensor-programming/hex-microservice/shortener"
 	"github.com/vmihailenco/msgpack"
+	"github.com/ward78/dotfiles/pkg/tensor/shortener"
 )
 
 type Redirect struct{}

@@ -2,10 +2,11 @@ package memory
 
 import (
 	"fmt"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/adding"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/listing"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/reviewing"
 	"time"
+
+	"github.com/ward78/dotfiles/pkg/katz/adding"
+	"github.com/ward78/dotfiles/pkg/katz/listing"
+	"github.com/ward78/dotfiles/pkg/katz/reviewing"
 )
 
 // Memory storage keeps data in memory

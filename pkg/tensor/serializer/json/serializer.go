@@ -2,8 +2,9 @@ package json
 
 import (
 	"encoding/json"
+
 	"github.com/pkg/errors"
-	"github.com/tensor-programming/hex-microservice/shortener"
+	"github.com/ward78/dotfiles/pkg/tensor/shortener"
 )
 
 type Redirect struct{}
