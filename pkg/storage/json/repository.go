@@ -9,10 +9,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/adding"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/backuping"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/listing"
 	scribble "github.com/nanobox-io/golang-scribble"
+	"github.com/ward78/dotfiles/pkg/system"
 )
 
 const (
@@ -48,14 +46,14 @@ func NewStorage() (*Storage, error) {
 }
 
 // AddUser saves the given user to the repository
-func (s *Storage) AddUser(b adding.User) error {
+func (s *Storage) AddUser(b system.User) error {
 
 	existingUsers := s.GetAllUsers()
 	for _, e := range existingUsers {
 		if b.Abv == e.Abv &&
 			b.Brewery == e.Brewery &&
 			b.Name == e.Name {
-			return adding.ErrDuplicate
+			return system.ErrDuplicate
 		}
 	}
 
@@ -76,11 +74,11 @@ func (s *Storage) AddUser(b adding.User) error {
 }
 
 // AddBackup saves the given backup in the repository
-func (s *Storage) AddBackup(r backuping.Backup) error {
+func (s *Storage) AddBackup(r system.Backup) error {
 
 	var user User
 	if err := s.db.Read(CollectionUser, strconv.Itoa(r.UserID), &user); err != nil {
-		return listing.ErrNotFound
+		return system.ErrNotFound
 	}
 
 	created := time.Now()
@@ -102,15 +100,15 @@ func (s *Storage) AddBackup(r backuping.Backup) error {
 }
 
 // Get returns a user with the specified ID
-func (s *Storage) GetUser(id int) (listing.User, error) {
+func (s *Storage) GetUser(id int) (system.User, error) {
 	var b User
-	var user listing.User
+	var user system.User
 
 	var resource = strconv.Itoa(id)
 
 	if err := s.db.Read(CollectionUser, resource, &b); err != nil {
 		// err handling omitted for simplicity
-		return user, listing.ErrNotFound
+		return user, system.ErrNotFound
 	}
 
 	user.ID = b.ID
@@ -124,8 +122,8 @@ func (s *Storage) GetUser(id int) (listing.User, error) {
 }
 
 // GetAll returns all users
-func (s *Storage) GetAllUsers() []listing.User {
-	list := []listing.User{}
+func (s *Storage) GetAllUsers() []system.User {
+	list := []system.User{}
 
 	records, err := s.db.ReadAll(CollectionUser)
 	if err != nil {
@@ -135,7 +133,7 @@ func (s *Storage) GetAllUsers() []listing.User {
 
 	for _, r := range records {
 		var b User
-		var user listing.User
+		var user system.User
 
 		if err := json.Unmarshal([]byte(r), &b); err != nil {
 			// err handling omitted for simplicity
@@ -156,8 +154,8 @@ func (s *Storage) GetAllUsers() []listing.User {
 }
 
 // GetAll returns all backups for a given user
-func (s *Storage) GetAllBackups(userID int) []listing.Backup {
-	list := []listing.Backup{}
+func (s *Storage) GetAllBackups(userID int) []system.Backup {
+	list := []system.Backup{}
 
 	records, err := s.db.ReadAll(CollectionBackup)
 	if err != nil {
@@ -174,7 +172,7 @@ func (s *Storage) GetAllBackups(userID int) []listing.Backup {
 		}
 
 		if r.UserID == userID {
-			var backup listing.Backup
+			var backup system.Backup
 
 			backup.ID = r.ID
 			backup.UserID = r.UserID

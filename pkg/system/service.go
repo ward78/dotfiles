@@ -1,12 +1,12 @@
 package system
 
 type Service interface {
-	// Service provides user adding operations.
+	// Service provides user system operations.
 	AddUser(...User)
-	// Service provides user and backup listing operations.
+	// Service provides user and backup system operations.
 	GetUser(int) (User, error)
 	GetUsers() []User
 	GetUserBackups(int) []Backup
-	// Service provides backuping operations.
+	// Service provides system operations.
 	AddUserBackup(Backup)
 }

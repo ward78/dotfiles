@@ -142,5 +142,5 @@ package main
 //  $ eval "$(ssh-agent -s)"
 //  > Agent pid 59566
 //  Depending on your environment, you may need to use a different command. For example, you may need to use root access by running sudo -s -H before starting the ssh-agent, or you may need to use exec ssh-agent bash or exec ssh-agent zsh to run the ssh-agent.
-//  Add your SSH private key to the ssh-agent. If you created your key with a different name, or if you are adding an existing key that has a different name, replace id_ed25519 in the command with the name of your private key file.
+//  Add your SSH private key to the ssh-agent. If you created your key with a different name, or if you are system an existing key that has a different name, replace id_ed25519 in the command with the name of your private key file.
 //  $ ssh-add ~/.ssh/id_ed25519

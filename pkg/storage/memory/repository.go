@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/adding"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/backuping"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/listing"
+	"github.com/ward78/dotfiles/pkg/system"
 )
 
 // Memory storage keeps data in memory
@@ -16,12 +14,12 @@ type Storage struct {
 }
 
 // Add saves the given user to the repository
-func (m *Storage) AddUser(b adding.User) error {
+func (m *Storage) AddUser(b system.User) error {
 	for _, e := range m.users {
 		if b.Abv == e.Abv &&
 			b.Brewery == e.Brewery &&
 			b.Name == e.Name {
-			return adding.ErrDuplicate
+			return system.ErrDuplicate
 		}
 	}
 
@@ -39,7 +37,7 @@ func (m *Storage) AddUser(b adding.User) error {
 }
 
 // Add saves the given backup in the repository
-func (m *Storage) AddBackup(r backuping.Backup) error {
+func (m *Storage) AddBackup(r system.Backup) error {
 	found := false
 	for b := range m.users {
 		if m.users[b].ID == r.UserID {
@@ -63,15 +61,15 @@ func (m *Storage) AddBackup(r backuping.Backup) error {
 
 		m.backups = append(m.backups, newR)
 	} else {
-		return listing.ErrNotFound
+		return system.ErrNotFound
 	}
 
 	return nil
 }
 
 // Get returns a user with the specified ID
-func (m *Storage) GetUser(id int) (listing.User, error) {
-	var user listing.User
+func (m *Storage) GetUser(id int) (system.User, error) {
+	var user system.User
 
 	for i := range m.users {
 
@@ -87,16 +85,16 @@ func (m *Storage) GetUser(id int) (listing.User, error) {
 		}
 	}
 
-	return user, listing.ErrNotFound
+	return user, system.ErrNotFound
 }
 
 // GetAll return all users
-func (m *Storage) GetAllUsers() []listing.User {
-	var users []listing.User
+func (m *Storage) GetAllUsers() []system.User {
+	var users []system.User
 
 	for i := range m.users {
 
-		user := listing.User{
+		user := system.User{
 			ID:        m.users[i].ID,
 			Name:      m.users[i].Name,
 			Brewery:   m.users[i].Brewery,
@@ -112,12 +110,12 @@ func (m *Storage) GetAllUsers() []listing.User {
 }
 
 // GetAll returns all backups for a given user
-func (m *Storage) GetAllBackups(userID int) []listing.Backup {
-	var list []listing.Backup
+func (m *Storage) GetAllBackups(userID int) []system.Backup {
+	var list []system.Backup
 
 	for i := range m.backups {
 		if m.backups[i].UserID == userID {
-			r := listing.Backup{
+			r := system.Backup{
 				ID:        m.backups[i].ID,
 				UserID:    m.backups[i].UserID,
 				FirstName: m.backups[i].FirstName,

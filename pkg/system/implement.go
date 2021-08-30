@@ -17,7 +17,7 @@ const (
 	Queued
 )
 
-// Event defines possible outcomes from the "adding actor"
+// Event defines possible outcomes from the "system actor"
 type Event int
 
 func (e Event) GetMeaning() string {
@@ -40,7 +40,7 @@ type service struct {
 	r Repository
 }
 
-// NewService creates an adding service with the necessary dependencies
+// NewService creates an system service with the necessary dependencies
 func NewService(r Repository) Service {
 	return &service{r}
 }
@@ -49,7 +49,7 @@ func NewService(r Repository) Service {
 func (s *service) AddUser(b ...User) {
 	// any validation can be done here
 	for _, user := range b {
-		_ = s.bR.AddUser(user) // error handling omitted for simplicity
+		_ = s.r.AddUser(user) // error handling omitted for simplicity
 	}
 }
 
@@ -70,5 +70,5 @@ func (s *service) GetUserBackups(userID int) []Backup {
 
 // AddUserBackup saves a new user backup in the database
 func (s *service) AddUserBackup(r Backup) {
-	_ = s.rR.AddBackup(r) // error handling omitted for simplicity
+	_ = s.r.AddBackup(r) // error handling omitted for simplicity
 }

@@ -1,16 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/adding"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/backuping"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/http/rest"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/listing"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/storage/json"
-	"github.com/katzien/go-structure-examples/domain-hex-actor/pkg/storage/memory"
+	"github.com/ward78/dotfiles/pkg/storage/json"
+	"github.com/ward78/dotfiles/pkg/storage/memory"
+	"github.com/ward78/dotfiles/pkg/system"
 )
 
 // StorageType defines available storage types
@@ -24,34 +17,22 @@ const (
 )
 
 func main() {
-
 	// set up storage
 	storageType := JSON // this could be a flag; hardcoded here for simplicity
-
-	var adder adding.Service
-	var lister listing.Service
-	var backuper backuping.Service
-
+	var adder system.Service
+	var lister system.Service
+	var backuper system.Service
 	switch storageType {
 	case Memory:
 		s := new(memory.Storage)
-
-		adder = adding.NewService(s)
-		lister = listing.NewService(s)
-		backuper = backuping.NewService(s)
-
+		adder = system.NewService(s)
+		lister = system.NewService(s)
+		backuper = system.NewService(s)
 	case JSON:
 		// error handling omitted for simplicity
 		s, _ := json.NewStorage()
-
-		adder = adding.NewService(s)
-		lister = listing.NewService(s)
-		backuper = backuping.NewService(s)
+		adder = system.NewService(s)
+		lister = system.NewService(s)
+		backuper = system.NewService(s)
 	}
-
-	// set up the HTTP server
-	router := rest.Handler(adder, lister, backuper)
-
-	fmt.Println("The user server is on tap now: http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
 }
